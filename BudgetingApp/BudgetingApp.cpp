@@ -80,3 +80,11 @@ void FillStartingInfo() {
 	}
 }
 
+/*****************************************************************************************
+* Adds entry to the end of the list updating the two vectors to be later saved to the file
+*****************************************************************************************/
+void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
+
+}
+
+//
