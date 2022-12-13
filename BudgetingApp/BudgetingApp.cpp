@@ -86,5 +86,3 @@ void FillStartingInfo() {
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 
 }
-
-//
