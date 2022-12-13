@@ -82,9 +82,8 @@ string GetAccountName() {
 		getline(loadFile, garbageInput);
 
 		loadFile.clear();
-		loadFile.ignore();
 
-		loadFile >> accountName;
+		getline(loadFile, accountName);
 		loadFile.close();
 	}
 	catch (runtime_error& excpt) {
@@ -167,7 +166,10 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 ********************************/
 void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 	ofstream saveDataToFile;
+	
+	double beginningTotal = GetTotal();
 
+	string accountName = GetAccountName();
 	try {
 		saveDataToFile.open("BudgetList.txt");
 
@@ -175,8 +177,8 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 			throw runtime_error("File unable to be opened.");
 		}
 
-		saveDataToFile << GetTotal() << endl;
-		saveDataToFile << GetAccountName() << endl;
+		saveDataToFile << beginningTotal << endl;
+		saveDataToFile << accountName << endl;
 
 		for (int i = 0; i < namesOfEntries.size() && i < entries.size(); i++) {
 			saveDataToFile << namesOfEntries.at(i) << " " << entries.at(i) << endl;
