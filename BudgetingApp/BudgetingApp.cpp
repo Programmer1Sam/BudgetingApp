@@ -86,7 +86,7 @@ void FillStartingInfo() {
 		cout << "Error: " << excpt.what() << endl;
 	}
 }
-
+ 
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	ifstream loadData;
 
@@ -144,3 +144,5 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 
 }
+
+//
