@@ -80,12 +80,15 @@ void FillStartingInfo() {
 	}
 }
  
+/*********************
+* Loads data from file
+*********************/
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	ifstream loadData;
 
 	double entry;// amount of money in entry
 
-	string name; // name of entry listed is loaded
+	string name = ""; // name of entry
 	string garbageData = ""; // meant to be used on the lines not needed to be loaded to skip them
 	
 	try {
@@ -105,6 +108,18 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what() << endl;
+	}
+}
+
+/********************************
+* Saves data from vectors to file
+********************************/
+void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
+	try {
+
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what();
 	}
 }
 
