@@ -6,4 +6,5 @@ using namespace std;
 #define BUDGETINGAPP_H
 int BudgetingMainMenu();
 double GetTotal();
+void FillStartingInfo();
 #endif // !BUGETINGAPP_H
