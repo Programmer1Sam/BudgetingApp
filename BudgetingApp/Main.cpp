@@ -4,11 +4,24 @@
 using namespace std;
 
 int main() {
-	double total = GetTotal();
+	double startingBalance = GetTotal();
+
+	int menuChoice = 0;
 
 	vector<string> namesOfEntries;
 	vector<double> amountOfEntry;
 
-	BudgetingMainMenu();
+	menuChoice = BudgetingMainMenu();
+
+	switch (menuChoice) {
+	default:
+		break;
+	case 1:
+		LoadFile(namesOfEntries, amountOfEntry);
+		break;
+	case 2:
+		SaveFile(namesOfEntries, amountOfEntry);
+	}
+
 	return 0;
 }
