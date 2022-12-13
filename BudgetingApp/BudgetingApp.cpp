@@ -18,10 +18,30 @@ int BudgetingMainMenu() {
 	cout << "           2 = Save budget data           " << endl;
 	cout << "        3 = Add entry to expenses         " << endl;
 	cout << "4 = calculate new spending limit for month" << endl;
+	cout << "5 = Create new budgetfile if non existent " << endl;
 	cout << "                0 = Quit                  " << endl;
 	cout << "------------------------------------------" << endl;
 	
+	menuChoice = ValidateNumericInput();
+
 	return menuChoice;
+}
+
+/***********************************************************
+* function checks to make sure inputted character is numeric
+***********************************************************/
+int ValidateNumericInput() {
+	int choice = 0;
+	
+	cin >> choice;
+
+	if (cin.fail()) {
+		cin.clear();
+
+		cin >> choice;
+	}
+
+	return choice;
 }
 
 /****************************************************************************
@@ -37,9 +57,9 @@ double GetTotal() {
 			throw runtime_error("File not open.");
 		}
 		loadFile >> total;
-		if (total == NULL) {
-			FillStartingInfo();
-		}
+		//if (total == NULL) {
+			//FillStartingInfo();
+		//}
 		loadFile.close();
 	}
 	catch (runtime_error& excpt) {
@@ -60,6 +80,9 @@ string GetAccountName() {
 			throw runtime_error("File not open.");
 		}
 		getline(loadFile, garbageInput);
+
+		loadFile.clear();
+		loadFile.ignore();
 
 		loadFile >> accountName;
 		loadFile.close();
@@ -85,13 +108,17 @@ void FillStartingInfo() {
 		if (!saveStartingInfo.is_open()) {
 			throw runtime_error("File not open.");
 		}
-		cout << "Enter name you would like to register account with(full name please): ";
-
-		getline(cin, nameOfAccount);
-
+		
 		cout << "Enter starting balance for account: ";
 
 		cin >> startingBalance;
+
+		cout << "Enter name you would like to register account with(full name please): ";
+		cin.clear();
+		cin.ignore();
+
+		getline(cin, nameOfAccount);
+
 
 		saveStartingInfo << startingBalance << endl;
 		saveStartingInfo << nameOfAccount << endl;
@@ -127,6 +154,8 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 			namesOfEntries.push_back(name);
 			entries.push_back(entry);
 		}
+		loadData.close();
+
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what() << endl;
@@ -152,7 +181,7 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 		for (int i = 0; i < namesOfEntries.size() && i < entries.size(); i++) {
 			saveDataToFile << namesOfEntries.at(i) << " " << entries.at(i) << endl;
 		}
-
+		saveDataToFile.close();
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what();
@@ -163,7 +192,17 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 * Adds entry to the end of the list updating the two vectors to be later saved to the file
 *****************************************************************************************/
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
+	string entryName = "";
+	double amountInEntry = 0;
 
+	cout << "Enter the name of the transaction: ";
+
+	cin >> entryName;
+
+	cout << "Enter the amount of transaction if income use positive if spending use -: ";
+
+	cin >> amountInEntry;
+
+	namesOfEntries.push_back(entryName);
+	entries.push_back(amountInEntry);
 }
-
-//

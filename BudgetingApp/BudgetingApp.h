@@ -5,6 +5,7 @@ using namespace std;
 #ifndef BUDGETINGAPP_H
 #define BUDGETINGAPP_H
 int BudgetingMainMenu();
+int ValidateNumericInput();
 
 double GetTotal();
 double GetCurrentBalance(vector<double> entries);
