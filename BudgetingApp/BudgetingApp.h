@@ -9,6 +9,8 @@ int BudgetingMainMenu();
 double GetTotal();
 double GetCurrentBalance(vector<double> entries);
 
+string GetAccountName();
+
 void FillStartingInfo();
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries);
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries);

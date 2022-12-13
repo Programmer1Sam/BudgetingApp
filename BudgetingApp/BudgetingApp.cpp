@@ -48,6 +48,28 @@ double GetTotal() {
 	return total;
 }
 
+string GetAccountName() {
+	ifstream loadFile;
+
+	string garbageInput = "";
+	string accountName = "";
+	try {
+		loadFile.open("BudgetList.txt");
+
+		if (!loadFile.is_open()) {
+			throw runtime_error("File not open.");
+		}
+		getline(loadFile, garbageInput);
+
+		loadFile >> accountName;
+		loadFile.close();
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what() << endl;
+	}
+	return accountName;
+}
+
 /*******************************************************************************************************
 * Function takes the user through filling out the starting information to a file if nothing is contained
 * inside one so the user may create a base balance and register a name with the file
@@ -115,7 +137,21 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 * Saves data from vectors to file
 ********************************/
 void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
+	ofstream saveDataToFile;
+
 	try {
+		saveDataToFile.open("BudgetList.txt");
+
+		if (!saveDataToFile.is_open()) {
+			throw runtime_error("File unable to be opened.");
+		}
+
+		saveDataToFile << GetTotal() << endl;
+		saveDataToFile << GetAccountName() << endl;
+
+		for (int i = 0; i < namesOfEntries.size() && i < entries.size(); i++) {
+			saveDataToFile << namesOfEntries.at(i) << " " << entries.at(i) << endl;
+		}
 
 	}
 	catch (runtime_error& excpt) {
