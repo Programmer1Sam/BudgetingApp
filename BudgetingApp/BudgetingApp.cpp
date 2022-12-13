@@ -7,13 +7,6 @@
 
 using namespace std;
 
-/********************************************************************************************
-* DATE:12.12.2022
-* AUTHOR:SAM TAYLOR
-* FILENAME:BUDGETINGAPP
-* PURPOSE:STORE ALL MAIN FUNCTIONS FOR THE BUDGETINGAPP PROGRAM AND BE RUN FROM THE MAIN FILE
-********************************************************************************************/
-
 /*************************************************************
 * Menu from which all main budgeting processes can be accessed
 *************************************************************/
@@ -113,29 +106,6 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what() << endl;
 	}
-}
-
-/*********************************************************************************
-* Totals up all entries income and expenses alike and gives you your total balance
-*********************************************************************************/
-double GetCurrentBalance(vector<double> entries) {
-	double startingBalance = GetTotal();
-	double endBalance = startingBalance;
-	for (int i = 0; i < entries.size(); i++) {
-		endBalance += entries.at(i);
-	}
-
-	return endBalance;
-}
-
-/********************************************
-* Meant to save currently loaded data to file
-********************************************/
-void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
-	double startingBalance = GetTotal();
-	double endBalance = GetCurrentBalance(entries);
-
-	ofstream saveFile;
 }
 
 /*****************************************************************************************
