@@ -7,13 +7,6 @@
 
 using namespace std;
 
-/********************************************************************************************
-* DATE:12.12.2022
-* AUTHOR:SAM TAYLOR
-* FILENAME:BUDGETINGAPP
-* PURPOSE:STORE ALL MAIN FUNCTIONS FOR THE BUDGETINGAPP PROGRAM AND BE RUN FROM THE MAIN FILE
-********************************************************************************************/
-
 /*************************************************************
 * Menu from which all main budgeting processes can be accessed
 *************************************************************/
@@ -87,60 +80,3 @@ void FillStartingInfo() {
 	}
 }
 
-void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
-	ifstream loadData;
-
-	double entry;// amount of money in entry
-
-	string name; // name of entry listed is loaded
-	string garbageData = ""; // meant to be used on the lines not needed to be loaded to skip them
-	
-	try {
-		loadData.open("BudgetList.txt");
-		
-		if (!loadData.is_open()) {
-			throw runtime_error("File not open.");
-		}
-
-		getline(cin, garbageData);
-		getline(cin, garbageData);
-		
-		while (loadData >> name >> entry) {
-			namesOfEntries.push_back(name);
-			entries.push_back(entry);
-		}
-	}
-	catch (runtime_error& excpt) {
-		cout << "Error: " << excpt.what() << endl;
-	}
-}
-
-/*********************************************************************************
-* Totals up all entries income and expenses alike and gives you your total balance
-*********************************************************************************/
-double GetCurrentBalance(vector<double> entries) {
-	double startingBalance = GetTotal();
-	double endBalance = startingBalance;
-	for (int i = 0; i < entries.size(); i++) {
-		endBalance += entries.at(i);
-	}
-
-	return endBalance;
-}
-
-/********************************************
-* Meant to save currently loaded data to file
-********************************************/
-void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
-	double startingBalance = GetTotal();
-	double endBalance = GetCurrentBalance(entries);
-
-	ofstream saveFile;
-}
-
-/*****************************************************************************************
-* Adds entry to the end of the list updating the two vectors to be later saved to the file
-*****************************************************************************************/
-void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
-
-}
