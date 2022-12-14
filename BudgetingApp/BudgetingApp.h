@@ -16,7 +16,7 @@ string GetAccountName();
 string ResizableBorder(int size);
 
 void FillStartingInfo();
-void WipeAllData();
+void WipeAllData(string FILENAME);
 void BudgetingHeader();
 void IncomeHeader();
 void SettingsHeader();

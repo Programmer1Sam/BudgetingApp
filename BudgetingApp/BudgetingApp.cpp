@@ -74,13 +74,39 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 ***************************/
 void IncomeHeader() {
 	system("CLS");
+
+	cout << "|----------------------------------|" << endl;
+	cout << "| 1 = Create new Income Data file  |" << endl;
+	cout << "|2 = Load previous Income Data file|" << endl;
+	cout << "|     3 = Save Income Data file    |" << endl;
+	cout << "|      0 = Return to main menu     |" << endl;
+	cout << "|----------------------------------|" << endl;
+	cout << endl << "Please select a choice by entering the number: ";
 }
 
 /**********************************************
 * Menu for income operations in the application
 **********************************************/
 void IncomeMenu() {
+	int menuChoice = -1;
 
+	while (menuChoice != 0) {
+		IncomeHeader();
+
+		menuChoice = ValidateNumericInput();
+
+		switch (menuChoice)
+		{
+		default:
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3: 
+			break;
+		}
+	}
 }
 
 /*****************************
@@ -170,7 +196,7 @@ string GetAccountName() {
 * inside one so the user may create a base balance and register a name with the file
 *******************************************************************************************************/
 void FillStartingInfo() {
-	WipeAllData();
+	WipeAllData("BudgetList.txt");
 
 	ofstream saveStartingInfo;
 	double startingBalance = 0; // starting balance for user
@@ -328,11 +354,11 @@ string ResizableBorder(int size) {
 /***************************************************
 * Meant to erase all data contained in the .txt file
 ***************************************************/
-void WipeAllData() {
+void WipeAllData(string FILENAME) {
 	ofstream dataRemoval;
 
 	try {
-		dataRemoval.open("BudgetList.txt");
+		dataRemoval.open(FILENAME);
 		
 		if (!dataRemoval.is_open()) {
 			throw runtime_error("File unable to be opened.");
