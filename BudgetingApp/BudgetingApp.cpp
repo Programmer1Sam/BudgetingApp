@@ -6,8 +6,29 @@
 
 #include "BudgetingApp.h"
 
+/*******************************************************************
+* DATE:12.14.2022
+* AUTHOR:SAM TAYLOR
+* FILENAME:BUDGETINGAPP
+* PURPOSE:HOLD ALL FUNCTIONS NEEDED TO RUN THE BUDGETING APP PROGRAM
+*******************************************************************/
+
 using namespace std;
 
+/***********************************************************
+* Prompt for an enter key to be pressed after all operations
+***********************************************************/
+void EnterKeyPrompt() {
+	string garbageInput = "";
+
+	cout << "|---------------------------------------|" << endl;
+	cout << "|Please press the enter key to continue.|" << endl;
+	cout << "|---------------------------------------|" << endl;
+	getline(cin, garbageInput);
+	cin.clear();
+	cin.ignore();
+
+}
 /*************************************************************
 * Menu from which all main budgeting processes can be accessed
 *************************************************************/
@@ -34,13 +55,13 @@ int MainMenu() {
 void BudgetingHeader() {
 	system("CLS");
 
-	cout << "|-----------------------------|" << endl;
-	cout << "|1 = Load previous budget data|" << endl;
-	cout << "|2 = Save current budget data |" << endl;
-	cout << "|3 = Add emtry to Budget data |" << endl;
-	cout << "|     4 = Delete all data     |" << endl;
-	cout << "|  0 =  Return to main menu   |" << endl;
-	cout << "|-----------------------------|" << endl;
+	cout << "|------------------------------------------|" << endl;
+	cout << "|       1 = Load previous budget data      |" << endl;
+	cout << "|       2 = Save current budget data       |" << endl;
+	cout << "|       3 = Add emtry to Budget data       |" << endl;
+	cout << "|            4 = Delete all data           |" << endl;
+	cout << "|        0 =  Return to main menu          |" << endl;
+	cout << "|------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
 }
 
@@ -59,8 +80,23 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 		{
 		default:
 			break;
+		case 0:
+			break;
 		case 1:
 			LoadFile(namesOfEntries, entries);
+			EnterKeyPrompt();
+			break;
+		case 2:
+			SaveFile(namesOfEntries, entries);
+			EnterKeyPrompt();
+			break;
+		case 3:
+			AddEntryToList(namesOfEntries, entries);
+			EnterKeyPrompt();
+			break;
+		case 4:
+			WipeAllData("BudgetList.txt");
+			EnterKeyPrompt();
 			break;
 		}
 	}
@@ -75,12 +111,12 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 void IncomeHeader() {
 	system("CLS");
 
-	cout << "|----------------------------------|" << endl;
-	cout << "| 1 = Create new Income Data file  |" << endl;
-	cout << "|2 = Load previous Income Data file|" << endl;
-	cout << "|     3 = Save Income Data file    |" << endl;
-	cout << "|      0 = Return to main menu     |" << endl;
-	cout << "|----------------------------------|" << endl;
+	cout << "|------------------------------------------|" << endl;
+	cout << "|     1 = Create new Income Data file      |" << endl;
+	cout << "|    2 = Load previous Income Data file    |" << endl;
+	cout << "|         3 = Save Income Data file        |" << endl;
+	cout << "|          0 = Return to main menu         |" << endl;
+	cout << "|------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
 }
 
@@ -100,10 +136,13 @@ void IncomeMenu() {
 		default:
 			break;
 		case 1:
+			EnterKeyPrompt();
 			break;
 		case 2:
+			EnterKeyPrompt();
 			break;
 		case 3: 
+			EnterKeyPrompt();
 			break;
 		}
 	}
@@ -153,9 +192,9 @@ double GetTotal() {
 			throw runtime_error("File not open.");
 		}
 		loadFile >> total;
-		//if (total == NULL) {
-			//FillStartingInfo();
-		//}
+		if (total == NULL) {
+			FillStartingInfo();
+		}
 		loadFile.close();
 	}
 	catch (runtime_error& excpt) {
@@ -239,7 +278,10 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 
 	string name = ""; // name of entry
 	string garbageData = ""; // meant to be used on the lines not needed to be loaded to skip them
-	
+
+
+	system("CLS");
+
 	try {
 		loadData.open("BudgetList.txt");
 		
@@ -257,6 +299,19 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 		}
 
 		loadData.close();
+
+		if (entries.size() == 0) {
+			cout << "|------------------|" << endl;
+			cout << "|No data to load...|" << endl;
+			cout << "|------------------|" << endl;
+		}
+
+		else {
+			cout << "|-------------------------|" << endl;
+			cout << "|Data loaded successfully!|" << endl;
+			cout << "|-------------------------|" << endl;
+		}
+	
 
 	}
 	catch (runtime_error& excpt) {
@@ -284,7 +339,7 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 		saveDataToFile << accountName << endl;
 		saveDataToFile << ResizableBorder(accountName.size()) << endl;
 
-		for (int i = 0; i < namesOfEntries.size() && i < entries.size(); i++) {
+		for (int i = 0; i < namesOfEntries.size(); i++) {
 			saveDataToFile << entries.at(i) << " " << namesOfEntries.at(i) << endl;
 		}
 
@@ -388,8 +443,6 @@ void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 
 	namesOfEntries.push_back(entryName);
 	entries.push_back(amountInEntry);
-
-	SaveFile(namesOfEntries, entries);
 }
 
 /***************************************************************************
