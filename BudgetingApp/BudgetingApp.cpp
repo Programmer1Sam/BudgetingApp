@@ -193,11 +193,48 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 		}
 
 		saveDataToFile << ResizableBorder(accountName.size()) << endl;
-		saveDataToFile << GetCurrentBalance(entries) << endl;
+		saveDataToFile << GetCurrentBalance(entries) << endl << endl;
+		SaveIncomeInfo();
+		
 		saveDataToFile.close();
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what();
+	}
+}
+
+/**************************
+* Saves user income to file
+**************************/
+void SaveIncomeInfo() {
+	ofstream saveIncome;
+	
+
+	try {
+		saveIncome.open("IncomeData.txt");
+
+		if (!saveIncome.is_open()) {
+			throw runtime_error("File unable to be opened.");
+		}
+		
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what()  << endl;
+	}
+}
+
+/***************************************************************
+* Checks to see if income info is already present in the file, a 
+* crucial part of the save info function
+***************************************************************/
+bool IncomeInfoPresent() {
+	ifstream fileCheck;
+
+	try {
+
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what() << endl;
 	}
 }
 

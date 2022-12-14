@@ -4,6 +4,8 @@ using namespace std;
 
 #ifndef BUDGETINGAPP_H
 #define BUDGETINGAPP_H
+bool IncomeInfoPresent();
+
 int BudgetingMainMenu();
 int ValidateNumericInput();
 
@@ -18,4 +20,5 @@ void WipeAllData();
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries);
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries);
 void SaveFile(vector<string> namesOfEntries, vector<double> entries);
+void SaveIncomeInfo();
 #endif // !BUGETINGAPP_H
