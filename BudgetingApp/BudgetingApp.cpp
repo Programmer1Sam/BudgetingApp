@@ -97,6 +97,8 @@ string GetAccountName() {
 * inside one so the user may create a base balance and register a name with the file
 *******************************************************************************************************/
 void FillStartingInfo() {
+	WipeAllData();
+
 	ofstream saveStartingInfo;
 	double startingBalance = 0; // starting balance for user
 	string nameOfAccount = ""; //users name that they will use to register the account
@@ -148,13 +150,16 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 
 		getline(cin, garbageData);
 		getline(cin, garbageData);
-		getline(cin, garbageData);
-		getline(cin, garbageData);
+		
+
 		
 		while (loadData >> name >> entry) {
 			namesOfEntries.push_back(name);
 			entries.push_back(entry);
 		}
+		getline(cin, garbageData);
+		getline(cin, garbageData);
+
 		loadData.close();
 
 	}
@@ -181,19 +186,48 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 
 		saveDataToFile << beginningTotal << endl;
 		saveDataToFile << accountName << endl;
-
-		for (int i = 0; i < accountName.size(); i++) {
-			saveDataToFile << "-";
-		}
-		saveDataToFile << endl;
+		saveDataToFile << ResizableBorder(accountName.size()) << endl;
 
 		for (int i = 0; i < namesOfEntries.size() && i < entries.size(); i++) {
 			saveDataToFile << namesOfEntries.at(i) << " " << entries.at(i) << endl;
 		}
+
+		saveDataToFile << ResizableBorder(accountName.size()) << endl;
+		saveDataToFile << GetCurrentBalance(entries) << endl;
 		saveDataToFile.close();
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what();
+	}
+}
+
+/*****************************************************************************
+* Function allowing for a border that may be resized to be able to be returned
+*****************************************************************************/
+string ResizableBorder(int size) {
+	string border = "";
+
+	for (int i = 0; i < size; i++) {
+		border += "-";
+	}
+
+	return border;
+}
+
+void WipeAllData() {
+	ofstream dataRemoval;
+
+	try {
+		dataRemoval.open("BudgetList.txt");
+		
+		if (!dataRemoval.is_open()) {
+			throw runtime_error("File unable to be opened.");
+		}
+		dataRemoval << "";
+		dataRemoval.close();
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what() << endl;
 	}
 }
 
@@ -214,4 +248,18 @@ void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 
 	namesOfEntries.push_back(entryName);
 	entries.push_back(amountInEntry);
+}
+
+/***************************************************************************
+* calculates the current amount of money in the users account and returns it
+***************************************************************************/
+double GetCurrentBalance(vector<double> entries) {
+	double startingBalance = GetTotal();
+	double currentBalance = startingBalance;
+
+	for (int i = 0; i < entries.size(); i++) {
+		currentBalance += entries.at(i);
+	}
+
+	return currentBalance;
 }
