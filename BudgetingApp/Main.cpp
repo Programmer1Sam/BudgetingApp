@@ -11,6 +11,7 @@ int main() {
 	vector<string> namesOfEntries;
 	vector<double> amountOfEntry;
 
+	LoadFile(namesOfEntries, amountOfEntry);
 
 	while (menuChoice != 0) {
 		menuChoice = BudgetingMainMenu();
@@ -19,15 +20,12 @@ int main() {
 		default:
 			break;
 		case 1:
-			LoadFile(namesOfEntries, amountOfEntry);
+			WipeAllData();
 			break;
 		case 2:
-			SaveFile(namesOfEntries, amountOfEntry);
-			break;
-		case 3:
 			AddEntryToList(namesOfEntries, amountOfEntry);
 			break;
-		case 5:
+		case 4:
 			FillStartingInfo();
 			break;
 		}

@@ -14,11 +14,10 @@ int BudgetingMainMenu() {
 	int menuChoice = 0;
 
 	cout << "------------------------------------------" << endl;
-	cout << "           1 = Load budget data           " << endl;
-	cout << "           2 = Save budget data           " << endl;
-	cout << "        3 = Add entry to expenses         " << endl;
-	cout << "4 = calculate new spending limit for month" << endl;
-	cout << "5 = Create new budgetfile if non existent " << endl;
+	cout << "            1 = wipe all data             " << endl;
+	cout << "        2 = Add entry to expenses         " << endl;
+	cout << "3 = calculate new spending limit for month" << endl;
+	cout << "4 = Create new budgetfile if non existent " << endl;
 	cout << "                0 = Quit                  " << endl;
 	cout << "------------------------------------------" << endl;
 	
@@ -153,8 +152,10 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 
 		getline(loadData, garbageData);
 		getline(loadData, garbageData);
-		
-		while (loadData >> name >> entry) {
+		loadData.ignore();
+
+		while (!loadData.fail()) {
+			loadData >> entry >> name;
 			namesOfEntries.push_back(name);
 			entries.push_back(entry);
 		}
@@ -188,7 +189,7 @@ void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
 		saveDataToFile << ResizableBorder(accountName.size()) << endl;
 
 		for (int i = 0; i < namesOfEntries.size() && i < entries.size(); i++) {
-			saveDataToFile << namesOfEntries.at(i) << " " << entries.at(i) << endl;
+			saveDataToFile << entries.at(i) << " " << namesOfEntries.at(i) << endl;
 		}
 
 		saveDataToFile << ResizableBorder(accountName.size()) << endl;
@@ -250,6 +251,8 @@ void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 
 	namesOfEntries.push_back(entryName);
 	entries.push_back(amountInEntry);
+
+	SaveFile(namesOfEntries, entries);
 }
 
 /***************************************************************************
