@@ -68,6 +68,9 @@ double GetTotal() {
 	return total;
 }
 
+/*******************************************************************************************
+* Finds and returns the holder of the account's name, located at the second line of the file
+*******************************************************************************************/
 string GetAccountName() {
 	ifstream loadFile;
 
@@ -136,7 +139,7 @@ void FillStartingInfo() {
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	ifstream loadData;
 
-	double entry;// amount of money in entry
+	double entry = 0;// amount of money in entry
 
 	string name = ""; // name of entry
 	string garbageData = ""; // meant to be used on the lines not needed to be loaded to skip them
@@ -148,17 +151,13 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 			throw runtime_error("File not open.");
 		}
 
-		getline(cin, garbageData);
-		getline(cin, garbageData);
-		
-
+		getline(loadData, garbageData);
+		getline(loadData, garbageData);
 		
 		while (loadData >> name >> entry) {
 			namesOfEntries.push_back(name);
 			entries.push_back(entry);
 		}
-		getline(cin, garbageData);
-		getline(cin, garbageData);
 
 		loadData.close();
 
@@ -214,6 +213,9 @@ string ResizableBorder(int size) {
 	return border;
 }
 
+/***************************************************
+* Meant to erase all data contained in the .txt file
+***************************************************/
 void WipeAllData() {
 	ofstream dataRemoval;
 
