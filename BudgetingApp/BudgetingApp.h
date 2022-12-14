@@ -6,7 +6,7 @@ using namespace std;
 #define BUDGETINGAPP_H
 bool IncomeInfoPresent();
 
-int BudgetingMainMenu();
+int MainMenu();
 int ValidateNumericInput();
 
 double GetTotal();

@@ -14,19 +14,19 @@ int main() {
 	LoadFile(namesOfEntries, amountOfEntry);
 
 	while (menuChoice != 0) {
-		menuChoice = BudgetingMainMenu();
+		menuChoice = MainMenu();
 
 		switch (menuChoice) {
 		default:
 			break;
 		case 1:
-			WipeAllData();
+			BudgetingMenu(namesOfEntries, amountOfEntry);
 			break;
 		case 2:
-			AddEntryToList(namesOfEntries, amountOfEntry);
+			IncomeMenu();
 			break;
-		case 4:
-			FillStartingInfo();
+		case 3 :
+			SettingsMenu();
 			break;
 		}
 

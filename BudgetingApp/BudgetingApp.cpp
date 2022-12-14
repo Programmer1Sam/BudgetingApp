@@ -11,20 +11,90 @@ using namespace std;
 /*************************************************************
 * Menu from which all main budgeting processes can be accessed
 *************************************************************/
-int BudgetingMainMenu() {
+int MainMenu() {
 	int menuChoice = 0;
 
-	cout << "------------------------------------------" << endl;
-	cout << "         1 = Budgeting Operations         " << endl;
-	cout << "          2 = Income Operations           " << endl;
-	cout << "               3 = Settings               " << endl;
-	cout << "4 = Create new budgetfile if non existent " << endl;
-	cout << "                0 = Quit                  " << endl;
-	cout << "------------------------------------------" << endl;
-	
+	system("CLS");
+
+	cout << "|------------------------------------------|" << endl;
+	cout << "|         1 = Budgeting Operations         |" << endl;
+	cout << "|          2 = Income Operations           |" << endl;
+	cout << "|               3 = Settings               |" << endl;
+	cout << "|                0 = Quit                  |" << endl;
+	cout << "|------------------------------------------|" << endl;
+	cout << endl << "Please select a choice by entering the number: ";
 	menuChoice = ValidateNumericInput();
 
 	return menuChoice;
+}
+
+/******************************
+* Header for the budgeting menu
+******************************/
+void BudgetingHeader() {
+	system("CLS");
+
+	cout << "|-----------------------------|" << endl;
+	cout << "|1 = Load previous budget data|" << endl;
+	cout << "|2 = Save current budget data |" << endl;
+	cout << "|3 = Add emtry to Budget data |" << endl;
+	cout << "|     4 = Delete all data     |" << endl;
+	cout << "|  0 =  Return to main menu   |" << endl;
+	cout << "|-----------------------------|" << endl;
+	cout << endl << "Please select a choice by entering the number: ";
+}
+
+/*************************************************
+* Menu for budgeting operations in the application
+*************************************************/
+void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
+	int menuChoice = -1;
+	
+	while (menuChoice != 0) {
+		BudgetingHeader();
+
+		menuChoice = ValidateNumericInput();
+
+		switch (menuChoice)
+		{
+		default:
+			break;
+		case 1:
+			LoadFile(namesOfEntries, entries);
+			break;
+		}
+	}
+	
+
+
+}
+
+/***************************
+* Header for the income menu
+***************************/
+void IncomeHeader() {
+	system("CLS");
+}
+
+/**********************************************
+* Menu for income operations in the application
+**********************************************/
+void IncomeMenu() {
+
+}
+
+/*****************************
+* Header for the settings menu
+*****************************/
+void SettingsHeader() {
+	system("CLS");
+}
+
+/*************************************
+* Menu for settings in the application
+*************************************/
+void SettingsMenu() {
+
 }
 
 /***********************************************************
