@@ -21,9 +21,9 @@ using namespace std;
 void EnterKeyPrompt() {
 	string garbageInput = "";
 
-	cout << "|---------------------------------------|" << endl;
-	cout << "|Please press the enter key to continue.|" << endl;
-	cout << "|---------------------------------------|" << endl;
+	cout << "|-----------------------------------------|" << endl;
+	cout << "| Please press the enter key to continue. |" << endl;
+	cout << "|-----------------------------------------|" << endl;
 	getline(cin, garbageInput);
 	cin.clear();
 	cin.ignore();
@@ -56,10 +56,9 @@ void BudgetingHeader() {
 	system("CLS");
 
 	cout << "|------------------------------------------|" << endl;
-	cout << "|       1 = Load previous budget data      |" << endl;
-	cout << "|       2 = Save current budget data       |" << endl;
-	cout << "|       3 = Add emtry to Budget data       |" << endl;
-	cout << "|            4 = Delete all data           |" << endl;
+	cout << "|       1 = Save current budget data       |" << endl;
+	cout << "|       2 = Add emtry to Budget data       |" << endl;
+	cout << "|            3 = Delete all data           |" << endl;
 	cout << "|        0 =  Return to main menu          |" << endl;
 	cout << "|------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
@@ -83,18 +82,14 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 		case 0:
 			break;
 		case 1:
-			LoadFile(namesOfEntries, entries);
-			EnterKeyPrompt();
-			break;
-		case 2:
 			SaveFile(namesOfEntries, entries);
 			EnterKeyPrompt();
 			break;
-		case 3:
+		case 2:
 			AddEntryToList(namesOfEntries, entries);
 			EnterKeyPrompt();
 			break;
-		case 4:
+		case 3:
 			WipeAllData("BudgetList.txt");
 			EnterKeyPrompt();
 			break;
