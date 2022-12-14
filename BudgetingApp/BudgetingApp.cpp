@@ -2,6 +2,7 @@
 #include <fstream>
 #include <stdexcept>
 #include <string>
+#include <iomanip>
 
 #include "BudgetingApp.h"
 
@@ -152,10 +153,9 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 
 		getline(loadData, garbageData);
 		getline(loadData, garbageData);
-		loadData.ignore();
+		getline(loadData, garbageData);
 
-		while (!loadData.fail()) {
-			loadData >> entry >> name;
+		while (loadData >> entry >> name) {
 			namesOfEntries.push_back(name);
 			entries.push_back(entry);
 		}
