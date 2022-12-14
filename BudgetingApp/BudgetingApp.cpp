@@ -15,9 +15,9 @@ int BudgetingMainMenu() {
 	int menuChoice = 0;
 
 	cout << "------------------------------------------" << endl;
-	cout << "            1 = wipe all data             " << endl;
-	cout << "        2 = Add entry to expenses         " << endl;
-	cout << "3 = calculate new spending limit for month" << endl;
+	cout << "         1 = Budgeting Operations         " << endl;
+	cout << "          2 = Income Operations           " << endl;
+	cout << "               3 = Settings               " << endl;
 	cout << "4 = Create new budgetfile if non existent " << endl;
 	cout << "                0 = Quit                  " << endl;
 	cout << "------------------------------------------" << endl;
@@ -231,7 +231,11 @@ bool IncomeInfoPresent() {
 	ifstream fileCheck;
 
 	try {
+		fileCheck.open("IncomeData.txt");
 
+		if (!fileCheck.is_open()) {
+			throw runtime_error("File unable to be opened.");
+		}
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what() << endl;

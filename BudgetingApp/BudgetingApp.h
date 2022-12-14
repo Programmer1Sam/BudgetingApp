@@ -17,6 +17,12 @@ string ResizableBorder(int size);
 
 void FillStartingInfo();
 void WipeAllData();
+void BudgetingHeader();
+void IncomeHeader();
+void SettingsHeader();
+void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries);
+void IncomeMenu();
+void SettingsMenu();
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries);
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries);
 void SaveFile(vector<string> namesOfEntries, vector<double> entries);
