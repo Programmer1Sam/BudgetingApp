@@ -1,4 +1,5 @@
-#include <iostream>
+ 
+	#include <iostream>
 #include <fstream>
 #include <stdexcept>
 #include <string>
@@ -57,7 +58,7 @@ void BudgetingHeader() {
 
 	cout << "|------------------------------------------|" << endl;
 	cout << "|       1 = Save current budget data       |" << endl;
-	cout << "|       2 = Add emtry to Budget data       |" << endl;
+	cout << "|       2 = Add entry to Budget data       |" << endl;
 	cout << "|            3 = Delete all data           |" << endl;
 	cout << "|        0 =  Return to main menu          |" << endl;
 	cout << "|------------------------------------------|" << endl;
@@ -106,12 +107,13 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 void IncomeHeader() {
 	system("CLS");
 
-	cout << "|------------------------------------------|" << endl;
-	cout << "|     1 = Create new Income Data file      |" << endl;
-	cout << "|    2 = Load previous Income Data file    |" << endl;
-	cout << "|         3 = Save Income Data file        |" << endl;
-	cout << "|          0 = Return to main menu         |" << endl;
-	cout << "|------------------------------------------|" << endl;
+	cout << "|-----------------------------------------------------|" << endl;
+	cout << "|           1 = Create new Income Data file           |" << endl;
+	cout << "|          2 = Load previous Income Data file         |" << endl;
+	cout << "|              3 = Save Income Data file              |" << endl;
+	cout << "|4 = Set percentage of money to be spent for the month|" << endl;
+	cout << "|               0 = Return to main menu               |" << endl;
+	cout << "|-----------------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
 }
 
@@ -141,6 +143,13 @@ void IncomeMenu() {
 			break;
 		}
 	}
+}
+
+/***************************************
+* Creates base file for income data file
+***************************************/
+void CreateIncomeDataFile() {
+
 }
 
 /*****************************

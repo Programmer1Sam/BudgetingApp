@@ -23,6 +23,7 @@ void IncomeHeader();
 void SettingsHeader();
 void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries);
 void IncomeMenu();
+void CreateIncomeDataFile();
 void SettingsMenu();
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries);
 void LoadFile(vector<string>& namesOfEntries, vector<double>& entries);
