@@ -57,7 +57,7 @@ void BudgetingHeader() {
 
 	cout << "|------------------------------------------|" << endl;
 	cout << "|       1 = Save current budget data       |" << endl;
-	cout << "|       2 = Add emtry to Budget data       |" << endl;
+	cout << "|       2 = Add entry to Budget data       |" << endl;
 	cout << "|            3 = Delete all data           |" << endl;
 	cout << "|        0 =  Return to main menu          |" << endl;
 	cout << "|------------------------------------------|" << endl;
