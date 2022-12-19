@@ -1,11 +1,10 @@
- 
-	#include <iostream>
-#include <fstream>
-#include <stdexcept>
-#include <string>
-#include <iomanip>
+ #include <iostream> // used for basic input output operations
+#include <fstream> // used for basic file operations
+#include <stdexcept> // for handling exceptions with files
+#include <string> // used for string operations such as getline
+#include <iomanip> // allows for input output manipulation
 
-#include "BudgetingApp.h"
+#include "BudgetingApp.h" // header file containing all function prototypes
 
 /*******************************************************************
 * DATE:12.14.2022
@@ -14,18 +13,18 @@
 * PURPOSE:HOLD ALL FUNCTIONS NEEDED TO RUN THE BUDGETING APP PROGRAM
 *******************************************************************/
 
-using namespace std;
+using namespace std; // declaration of namespace
 
 /***********************************************************
 * Prompt for an enter key to be pressed after all operations
 ***********************************************************/
 void EnterKeyPrompt() {
-	string garbageInput = "";
+	string garbageInput = ""; // input used as a filler without actually needing to grab anything
 
 	cout << "|-----------------------------------------|" << endl;
 	cout << "| Please press the enter key to continue. |" << endl;
 	cout << "|-----------------------------------------|" << endl;
-	getline(cin, garbageInput);
+	getline(cin, garbageInput); // gets the line when user presses enter key
 	cin.clear();
 	cin.ignore();
 
@@ -34,9 +33,9 @@ void EnterKeyPrompt() {
 * Menu from which all main budgeting processes can be accessed
 *************************************************************/
 int MainMenu() {
-	int menuChoice = 0;
+	int menuChoice = 0; // used for choosing which operation to be run
 
-	system("CLS");
+	system("CLS"); // clears console screen
 
 	cout << "|------------------------------------------|" << endl;
 	cout << "|         1 = Budgeting Operations         |" << endl;
@@ -45,9 +44,9 @@ int MainMenu() {
 	cout << "|                0 = Quit                  |" << endl;
 	cout << "|------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
-	menuChoice = ValidateNumericInput();
+	menuChoice = ValidateNumericInput(); // checks to make sure the chosen choice is numeric
 
-	return menuChoice;
+	return menuChoice; // returns menu choice for operations to be chosen 
 }
 
 /******************************
@@ -83,7 +82,7 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 		case 0:
 			break;
 		case 1:
-			SaveFile(namesOfEntries, entries);
+			SaveBudgetFile(namesOfEntries, entries);
 			EnterKeyPrompt();
 			break;
 		case 2:
@@ -275,7 +274,7 @@ void FillStartingInfo() {
 /*********************
 * Loads data from file
 *********************/
-void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
+void LoadBudgetFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	ifstream loadData;
 
 	double entry = 0;// amount of money in entry
@@ -326,7 +325,7 @@ void LoadFile(vector<string>& namesOfEntries, vector<double>& entries) {
 /********************************
 * Saves data from vectors to file
 ********************************/
-void SaveFile(vector<string> namesOfEntries, vector<double> entries) {
+void SaveBudgetFile(vector<string> namesOfEntries, vector<double> entries) {
 	ofstream saveDataToFile;
 	
 	double beginningTotal = GetTotal();
