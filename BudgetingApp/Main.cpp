@@ -1,4 +1,5 @@
 #include <string>
+
 #include "BudgetingApp.h"
 
 /*******************************************
@@ -13,14 +14,15 @@
 using namespace std;
 
 int main() {
-	double startingBalance = GetTotal();
+	double startingBalance = GetTotal(); // gets the starting balance for the budgetfile
 
-	int menuChoice = -1;
+	int menuChoice = -1; // menu choice starts at -1 so that it runs the while loop at least once
 
-	vector<string> namesOfEntries;
-	vector<double> amountOfEntry;
+	vector<string> namesOfEntries; // vector used for entry names
+	vector<double> amountOfEntry; // vector used for amounts in transactions
 
 	LoadBudgetFile(namesOfEntries, amountOfEntry);
+	SaveBudgetFile(namesOfEntries, amountOfEntry); // necessary here for balance to be imported to the income data file
 
 	while (menuChoice != 0) {
 		menuChoice = MainMenu();
