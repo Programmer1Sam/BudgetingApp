@@ -43,5 +43,7 @@ int main() {
 
 	}
 
+	CreateIncomeDataFile(); // makes sure program ends with updated income data file
+
 	return 0;
 }
