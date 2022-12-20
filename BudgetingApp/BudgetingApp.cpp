@@ -15,6 +15,9 @@
 
 using namespace std; // declaration of namespace
 
+//global variables
+double globalCurrentBalance; // used to pull currentBalance from the budgetlist to IncomeData
+
 /***********************************************************
 * Prompt for an enter key to be pressed after all operations
 ***********************************************************/
@@ -107,7 +110,7 @@ void IncomeHeader() {
 	system("CLS");
 
 	cout << "|-----------------------------------------------------|" << endl;
-	cout << "|           1 = Create new Income Data file           |" << endl;
+	cout << "|           1 = Create/update Income Data file        |" << endl;
 	cout << "|          2 = Load previous Income Data file         |" << endl;
 	cout << "|              3 = Save Income Data file              |" << endl;
 	cout << "|4 = Set percentage of money to be spent for the month|" << endl;
@@ -132,6 +135,7 @@ void IncomeMenu() {
 		default:
 			break;
 		case 1:
+			CreateIncomeDataFile();
 			EnterKeyPrompt();
 			break;
 		case 2:
@@ -148,7 +152,79 @@ void IncomeMenu() {
 * Creates base file for income data file
 ***************************************/
 void CreateIncomeDataFile() {
+	ofstream cif; // cif stands for create income file
+	
+	string accountName = GetAccountName(); // pulls account name from budget file since the two files are likely under the same name
 
+	double currentIncome = GetUserIncome(); // Income of user
+	double hoursPerWeek = 0; // hours user works per week
+	double currentTotalBalance = globalCurrentBalance; // gets current balance that is at the bottom of the budgetlist file
+	try {
+		cif.open("IncomeDataFile.txt");
+	
+		if (!cif.is_open()) {
+			throw runtime_error("File not able to be opened!");
+		}
+
+		cif << "User: " << accountName << endl;
+		cif << "Balance: " << currentTotalBalance << endl;
+		cif << ResizableBorder(20) << endl;
+		cif << "Income: " << currentIncome << endl;
+		cif << "Hours working per week: " << hoursPerWeek << endl;
+
+		cif.close();
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what() << endl;
+	}
+}
+
+/*********************************************************************************
+* Returns the income the user has and adds the income if it does not already exist
+*********************************************************************************/
+double GetUserIncome() 
+{
+	ifstream rui; // stands for read user income, used to read the file
+
+	string garbageInput = ""; // used to get rid of the unnecessary lines for the check
+
+	double userIncome = 0; // stores income data
+	if (IncomeInfoPresent()) 
+	{
+		try
+		{
+			rui.open("IncomeDataFile.txt");
+
+			if (!rui.is_open()) 
+			{
+				throw runtime_error("File unable to be accessed.");
+			}
+
+			getline(rui, garbageInput);
+			getline(rui, garbageInput);
+			getline(rui, garbageInput);
+
+			rui >> garbageInput >> userIncome;
+
+			rui.close();
+
+			if (userIncome <= 0)
+			{
+				cout << "You have not entered an income amount please enter it here: ";
+
+				cin >> userIncome;
+			}
+			return userIncome;
+		}
+		catch (runtime_error& excpt)
+		{
+			cout << "Error: " << excpt.what() << endl;
+		}
+	}
+
+	else {
+		return 0;
+	}
 }
 
 /*****************************
@@ -348,8 +424,6 @@ void SaveBudgetFile(vector<string> namesOfEntries, vector<double> entries) {
 
 		saveDataToFile << ResizableBorder(accountName.size()) << endl;
 		saveDataToFile << GetCurrentBalance(entries) << endl << endl;
-		SaveIncomeInfo();
-		
 		saveDataToFile.close();
 	}
 	catch (runtime_error& excpt) {
@@ -384,12 +458,20 @@ void SaveIncomeInfo() {
 bool IncomeInfoPresent() {
 	ifstream fileCheck;
 
+	string checker;
+
 	try {
-		fileCheck.open("IncomeData.txt");
+		fileCheck.open("IncomeDataFile.txt");
 
 		if (!fileCheck.is_open()) {
 			throw runtime_error("File unable to be opened.");
 		}
+		fileCheck >> checker;
+		if (fileCheck.fail()) {
+			return false;
+		}
+
+		return true;
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what() << endl;
@@ -458,6 +540,8 @@ double GetCurrentBalance(vector<double> entries) {
 	for (int i = 0; i < entries.size(); i++) {
 		currentBalance += entries.at(i);
 	}
+
+	globalCurrentBalance = currentBalance;
 
 	return currentBalance;
 }

@@ -1,0 +1,5 @@
+User: Sam Ryan Taylor
+Balance: 500
+--------------------
+Income: 10
+Hours working per week: 0
