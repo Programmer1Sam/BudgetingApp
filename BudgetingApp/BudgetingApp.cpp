@@ -18,6 +18,8 @@ using namespace std; // declaration of namespace
 //global variables
 double globalCurrentBalance; // used to pull currentBalance from the budgetlist to IncomeData
 
+constexpr int MAX_HORIZONTAL = 50;
+
 /***********************************************************
 * Prompt for an enter key to be pressed after all operations
 ***********************************************************/
@@ -62,6 +64,7 @@ void BudgetingHeader() {
 	cout << "|       1 = Save current budget data       |" << endl;
 	cout << "|       2 = Add entry to Budget data       |" << endl;
 	cout << "|            3 = Delete all data           |" << endl;
+	cout << "|           4 = Display all data           |" << endl;
 	cout << "|        0 =  Return to main menu          |" << endl;
 	cout << "|------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
@@ -90,10 +93,15 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 			break;
 		case 2:
 			AddEntryToList(namesOfEntries, entries);
+			SaveBudgetFile(namesOfEntries, entries);
 			EnterKeyPrompt();
 			break;
 		case 3:
 			WipeAllData("BudgetList.txt");
+			EnterKeyPrompt();
+			break;
+		case 4:
+			PrintFileToScreen("BudgetList.txt");
 			EnterKeyPrompt();
 			break;
 		}
@@ -101,6 +109,31 @@ void BudgetingMenu(vector<string>& namesOfEntries, vector<double>& entries) {
 	
 
 
+}
+
+void PrintFileToScreen(string FILENAME) {
+	ifstream lfp; // stands for load file to print
+	
+	string line = "";
+
+	system("CLS");
+
+	try {
+		lfp.open(FILENAME);
+
+		if (!lfp.is_open()) {
+			throw runtime_error("File unable to be opened.");
+		}
+
+		while (getline(lfp, line)) {
+			cout << left << setw(MAX_HORIZONTAL - line.size()) << line << endl;
+		}
+
+		lfp.close();
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what() << endl;
+	}
 }
 
 /***************************
@@ -112,8 +145,10 @@ void IncomeHeader() {
 	cout << "|-----------------------------------------------------|" << endl;
 	cout << "|           1 = Create/update Income Data file        |" << endl;
 	cout << "|          2 = Load previous Income Data file         |" << endl;
-	cout << "|              3 = Save Income Data file              |" << endl;
-	cout << "|4 = Set percentage of money to be spent for the month|" << endl;
+	cout << "|              3 = Save Income Amount data            |" << endl;
+	cout << "|            4 = Edit hours worked per week           |" << endl;
+	cout << "|5 = Set percentage of money to be spent for the month|" << endl;
+	cout << "|         6 = Display file contents on screen         |" << endl;
 	cout << "|               0 = Return to main menu               |" << endl;
 	cout << "|-----------------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
@@ -122,7 +157,8 @@ void IncomeHeader() {
 /**********************************************
 * Menu for income operations in the application
 **********************************************/
-void IncomeMenu() {
+void IncomeMenu(string userName, double balance, double income,
+	double hoursPerWeek, double monthlyIncome, double spendingPercentage, double& spendingAmount) {
 	int menuChoice = -1;
 
 	while (menuChoice != 0) {
@@ -135,30 +171,133 @@ void IncomeMenu() {
 		default:
 			break;
 		case 1:
-			CreateIncomeDataFile();
+			UpdateIncomeDataFile(userName, balance, income, hoursPerWeek, monthlyIncome, spendingPercentage, spendingAmount);
+			
 			EnterKeyPrompt();
+			
 			break;
 		case 2:
+			LoadIncomeData(userName, balance, income, hoursPerWeek, monthlyIncome, spendingPercentage, spendingAmount);
+
 			EnterKeyPrompt();
+			
 			break;
 		case 3: 
+			cout << "What would you like to set your income to: ";
+
+			cin >> income;
+			monthlyIncome = GetTotalIncomeInMonth(hoursPerWeek, income);
+			spendingAmount = CalculateSpendingAmount(spendingPercentage, monthlyIncome);
+			UpdateIncomeDataFile(userName, balance, income, hoursPerWeek, monthlyIncome, spendingPercentage, spendingAmount);
+
 			EnterKeyPrompt();
+
 			break;
+		case 4:
+			system("CLS");
+			cout << "How many hours do you work a week: ";
+			cin >> hoursPerWeek;
+			monthlyIncome = GetTotalIncomeInMonth(hoursPerWeek, income);
+			spendingAmount = CalculateSpendingAmount(spendingPercentage, monthlyIncome);
+			UpdateIncomeDataFile(userName, balance, income, hoursPerWeek, monthlyIncome, spendingPercentage, spendingAmount);
+			
+			break;
+		case 5:
+			cout << "What percent of money should be used on spending: ";
+			
+			cin >> spendingPercentage;
+
+			spendingAmount = CalculateSpendingAmount(spendingPercentage, monthlyIncome);
+
+			UpdateIncomeDataFile(userName, balance, income, hoursPerWeek, monthlyIncome, spendingPercentage, spendingAmount);
+
+			break;
+		case 6:
+			PrintFileToScreen("IncomeDataFile.txt");
+
+			EnterKeyPrompt();
+			
+			break;
+
 		}
 	}
 }
 
+/************************************************
+* Used to return total amount that user can spend
+************************************************/
+double CalculateSpendingAmount(double percentage, double income) {
+	return (percentage /100.0) * income;
+}
+
+/******************************************
+* used to skip unnecessary words in loading
+******************************************/
+void SkipWords(int loops, ifstream& lif) {
+	string garbageInput = "";
+	try
+	{
+		for (int i = 0; i < loops; i++) {
+			lif >> garbageInput;
+		}
+	}
+	catch (const std::exception&)
+	{
+
+	}
+	
+}
+
+
+/**********************************************************************
+* Function meant to fill variables with their respective pieces of data
+**********************************************************************/
+void LoadIncomeData(string& userName, double& balance, double& income,
+	double& hoursPerWeek, double& monthlyIncome, double& spendingPercentage, double& spendingAmount) {
+	ifstream lif; // lif stands for load income file
+
+	string garbageInput = "";
+
+	double currentTotalBalance = globalCurrentBalance; // gets current balance that is at the bottom of the budgetlist file
+	try {
+		lif.open("IncomeDataFile.txt");
+
+		if (!lif.is_open()) {
+			throw runtime_error("File not able to be opened!");
+		}
+
+		lif >> garbageInput;
+		lif >> userName;
+		lif >> garbageInput;
+		lif >> balance;
+		SkipWords(2, lif);
+		lif >> income;
+		SkipWords(4, lif);
+		lif >> hoursPerWeek;
+		SkipWords(3, lif);
+		lif >> monthlyIncome;
+		SkipWords(6, lif);
+		lif >> spendingPercentage;
+		SkipWords(6, lif);
+		lif >> spendingAmount;
+
+		lif.close();
+	}
+	catch (runtime_error& excpt) {
+		cout << "Error: " << excpt.what() << endl;
+	}
+}
+
+
 /***************************************
 * Creates base file for income data file
 ***************************************/
-void CreateIncomeDataFile() {
+void UpdateIncomeDataFile(string userName, double balance, double income,
+	double hoursPerWeek, double monthlyIncome, double spendingPercentage, double spendingAmount) {
 	ofstream cif; // cif stands for create income file
 	
-	string accountName = GetAccountName(); // pulls account name from budget file since the two files are likely under the same name
-
-	double currentIncome = GetUserIncome(); // Income of user
-	double hoursPerWeek = GetHoursWorkedPerWeek(); // hours user works per week
 	double currentTotalBalance = globalCurrentBalance; // gets current balance that is at the bottom of the budgetlist file
+
 	try {
 		cif.open("IncomeDataFile.txt");
 	
@@ -166,17 +305,32 @@ void CreateIncomeDataFile() {
 			throw runtime_error("File not able to be opened!");
 		}
 
-		cif << "User: " << accountName << endl;
+		cif << "User: " << userName << endl;
 		cif << "Balance: " << currentTotalBalance << endl;
-		cif << ResizableBorder(20) << endl;
-		cif << "Income: " << currentIncome << endl;
+		cif << ResizableBorder(50) << endl;
+		cif << "Income: " << income << endl;
 		cif << "Hours working per week: " << hoursPerWeek << endl;
-
+		cif << "Total monthly Income: " << fixed << setprecision(2) << hoursPerWeek *  income * (30.0 / 7.0) << endl;
+		cif << ResizableBorder(50) << endl;
+		cif << "Percentage of spending money seleceted: " << spendingPercentage << endl;
+		cif << "Money available to spend during month: " << spendingAmount << endl;
+		cif << ResizableBorder(50) << endl;
+		
 		cif.close();
 	}
 	catch (runtime_error& excpt) {
 		cout << "Error: " << excpt.what() << endl;
 	}
+} 
+
+/*******************************************************
+* returns the users total projected income for the month
+*******************************************************/
+double GetTotalIncomeInMonth(double hoursPerWeek, double income) 
+{
+	double amountOfWeeks = 30.0 / 7.0; // calculates how much a worker will get paid not including taxes yet
+	
+	return hoursPerWeek * income * amountOfWeeks;
 }
 
 /**********************************************************************************************
@@ -376,8 +530,8 @@ void FillStartingInfo() {
 		cin >> startingBalance;
 
 		cout << "Enter name you would like to register account with(full name please): ";
-		cin.clear();
 		cin.ignore();
+		
 
 		getline(cin, nameOfAccount);
 
@@ -442,15 +596,53 @@ void LoadBudgetFile(vector<string>& namesOfEntries, vector<double>& entries) {
 	}
 }
 
+bool FileInfoPresent(string FILENAME) {
+	ifstream tif;
+
+	string test = "";
+	try
+	{
+		tif.open(FILENAME);
+
+		if (!tif.is_open()) {
+			throw runtime_error("File cant be opened.");
+		}
+		tif >> test;
+		if (!(test == ""))
+			return true;
+		return false;
+	}
+	catch (runtime_error& excpt)
+	{
+		cout << "Error: " << excpt.what() << endl;
+		return false;
+	}
+}
+
 /********************************
 * Saves data from vectors to file
 ********************************/
 void SaveBudgetFile(vector<string> namesOfEntries, vector<double> entries) {
 	ofstream saveDataToFile;
-	
-	double beginningTotal = GetTotal();
 
-	string accountName = GetAccountName();
+	double beginningTotal = 0;
+
+	string accountName = "";
+
+	if (FileInfoPresent("BudgetList.txt")) {
+		beginningTotal = GetTotal();
+
+		accountName = GetAccountName();
+	}
+	else {
+		cout << "Please enter a starting balance: ";
+
+		cin >> beginningTotal;
+
+		cout << "Please enter a name for the account: ";
+
+		getline(cin, accountName);
+	}
 	try {
 		saveDataToFile.open("BudgetList.txt");
 
@@ -561,17 +753,18 @@ void WipeAllData(string FILENAME) {
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 	string entryName = "";
 	double amountInEntry = 0;
+	if (FileInfoPresent("BudgetList")) {
+		cout << "Enter the name of the transaction: ";
 
-	cout << "Enter the name of the transaction: ";
+		cin >> entryName;
 
-	cin >> entryName;
+		cout << "Enter the amount of transaction if income use positive if spending use -: ";
 
-	cout << "Enter the amount of transaction if income use positive if spending use -: ";
+		cin >> amountInEntry;
 
-	cin >> amountInEntry;
-
-	namesOfEntries.push_back(entryName);
-	entries.push_back(amountInEntry);
+		namesOfEntries.push_back(entryName);
+		entries.push_back(amountInEntry);
+	}
 }
 
 /***************************************************************************
