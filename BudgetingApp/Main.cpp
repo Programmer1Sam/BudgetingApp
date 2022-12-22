@@ -15,11 +15,19 @@ using namespace std;
 
 int main() {
 	double startingBalance = GetTotal(); // gets the starting balance for the budgetfile
+	double balance = 0; 
+	double income = 0;
+	double hoursPerWeek = 0;
+	double monthlyIncome = 0;
+	double spendingPercentage = 0;
+	double spendingAmount = 0;
 
 	int menuChoice = -1; // menu choice starts at -1 so that it runs the while loop at least once
 
 	vector<string> namesOfEntries; // vector used for entry names
 	vector<double> amountOfEntry; // vector used for amounts in transactions
+
+	string userName = GetAccountName();
 
 	LoadBudgetFile(namesOfEntries, amountOfEntry);
 	SaveBudgetFile(namesOfEntries, amountOfEntry); // necessary here for balance to be imported to the income data file
@@ -34,7 +42,7 @@ int main() {
 			BudgetingMenu(namesOfEntries, amountOfEntry);
 			break;
 		case 2:
-			IncomeMenu();
+			IncomeMenu(userName, balance, income, hoursPerWeek, monthlyIncome, spendingPercentage, spendingAmount);
 			break;
 		case 3 :
 			SettingsMenu();
@@ -42,8 +50,6 @@ int main() {
 		}
 
 	}
-
-	CreateIncomeDataFile(); // makes sure program ends with updated income data file
 
 	return 0;
 }

@@ -16,8 +16,11 @@ using namespace std;
 int MainMenu(); // loads the main menu from which the user can select the operation they would like to do
 int ValidateNumericInput(); // checks to make sure a number has been entered and not a string
 
+bool FileInfoPresent(string FILENAME);
+
 string ResizableBorder(int size); // allows for the creation of a line border with adjustable size
 
+void PrintFileToScreen(string FILENAME);
 void SettingsHeader(); // header for the settings menu
 void SettingsMenu(); // setings menu 
 void EnterKeyPrompt(); // prompts the user to hit the enter key allowing for a transition between operations back to menus
@@ -45,10 +48,16 @@ string GetAccountName(); // retrieves the name registered in the file
 bool IncomeInfoPresent(); // checks to see if any income info is present in the file
 
 void IncomeHeader(); // header for the income menu
-void IncomeMenu(); // menu from which all income operations are run
-void CreateIncomeDataFile(); // function for creating an income file
+void IncomeMenu(string userName, double balance, double income, double hoursPerWeek, double monthlyIncome, double spendingPercentage, double& spendingAmount); // menu from which all income operations are run
+void UpdateIncomeDataFile(string userName, double balance, double income, 
+	double hoursPerWeek, double monthlyIncome, double spendingPercentage, double spendingAmount); // function for creating an income file
 void SaveIncomeInfo(); // save function for income data
+void LoadIncomeData(string& userName, double& balance, double& income, 
+	double& hoursPerWeek, double& monthlyIncome, double& spendingPercentage, double& spendingAmount); // loads and stores data from the income file into variables
+void SkipWords(int loops, ifstream& lif);
 
+double GetTotalIncomeInMonth(double hoursPerWeek, double income); // gets the projected income in a month
+double CalculateSpendingAmount(double percentage, double income);
 double GetUserIncome(); // gets user income if file has none
 double GetHoursWorkedPerWeek(); // returns the users hours per week at their job
 #endif // !INCOMEDATA_H
