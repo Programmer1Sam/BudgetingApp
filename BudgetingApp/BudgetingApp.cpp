@@ -753,7 +753,7 @@ void WipeAllData(string FILENAME) {
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 	string entryName = "";
 	double amountInEntry = 0;
-	if (FileInfoPresent("BudgetList")) {
+	if (FileInfoPresent("BudgetList.txt")) {
 		cout << "Enter the name of the transaction: ";
 
 		cin >> entryName;
