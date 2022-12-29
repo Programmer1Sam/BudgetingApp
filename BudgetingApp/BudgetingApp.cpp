@@ -30,7 +30,6 @@ void EnterKeyPrompt() {
 	cout << "| Please press the enter key to continue. |" << endl;
 	cout << "|-----------------------------------------|" << endl;
 	getline(cin, garbageInput); // gets the line when user presses enter key
-	cin.clear();
 	cin.ignore();
 
 }
@@ -45,7 +44,7 @@ int MainMenu() {
 	cout << "|------------------------------------------|" << endl;
 	cout << "|         1 = Budgeting Operations         |" << endl;
 	cout << "|          2 = Income Operations           |" << endl;
-	cout << "|               3 = Settings               |" << endl;
+	// cout << "|               3 = Settings               |" << endl;
 	cout << "|                0 = Quit                  |" << endl;
 	cout << "|------------------------------------------|" << endl;
 	cout << endl << "Please select a choice by entering the number: ";
@@ -641,6 +640,8 @@ void SaveBudgetFile(vector<string> namesOfEntries, vector<double> entries) {
 
 		cout << "Please enter a name for the account: ";
 
+		cin.ignore();
+		
 		getline(cin, accountName);
 	}
 	try {
@@ -753,7 +754,7 @@ void WipeAllData(string FILENAME) {
 void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 	string entryName = "";
 	double amountInEntry = 0;
-	if (FileInfoPresent("BudgetList")) {
+	if (FileInfoPresent("BudgetList.txt")) {
 		cout << "Enter the name of the transaction: ";
 
 		cin >> entryName;
@@ -764,7 +765,7 @@ void AddEntryToList(vector<string>& namesOfEntries, vector<double>& entries) {
 
 		namesOfEntries.push_back(entryName);
 		entries.push_back(amountInEntry);
-	}
+	} 
 }
 
 /***************************************************************************
